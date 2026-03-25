@@ -1,1 +1,7 @@
-<p>quiz-page works!</p>
+<!-- @for(que of sample.questions; track que.question) {
+
+
+} -->
+<div class="flex justify-center min-w-full">
+  <app-quiz-card [question]="sample.questions[currentQuestionIndex()]" (nextQuestion)="next()" (endQuiz)="end()" />
+</div>

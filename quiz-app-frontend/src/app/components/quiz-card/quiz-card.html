@@ -1,0 +1,21 @@
+<div class="flex flex-col  border items-center mt-10 max-w-fit ">
+
+
+  <h2 class="flex justify-center ">{{question().question}}</h2>
+  <div>
+
+    <div class="flex flex-1 flex-col gap-2 items-start min-w-70 border p-3">
+      @for(option of question().options; track option){
+      <button class="border rounded-2xl w-full p-1.5 cursor-pointer flex items-start">{{option}}</button>
+      }
+
+    </div>
+  </div>
+
+  <div class="flex flex-col justify-center items-center gap-2 mt-5">
+    <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer " (click)="nextQuestion.emit()">Next
+      question</button>
+    <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer " (click)="endQuiz.emit()">End quiz</button>
+  </div>
+
+</div>
