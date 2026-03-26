@@ -1,1 +1,12 @@
-<p>result-page works!</p>
+<div class="flex flex-col items-center gap-4 m-4 p-4 w-2xl border">
+
+  <h1>Result:</h1>
+  <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+
+  <p>10/10</p>
+<div class="flex flex-col justify-center items-center gap-4">
+  <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer"  (click)="retry()" >Retake Quiz</button>
+  <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer " (click)="home()">Home</button>
+</div>
+
+</div>
