@@ -12,4 +12,11 @@ export class QuizCard {
 
   nextQuestion = output();
   endQuiz = output();
+
+
+  constructor() {
+    console.log(this.question)
+  }
+
+
 }

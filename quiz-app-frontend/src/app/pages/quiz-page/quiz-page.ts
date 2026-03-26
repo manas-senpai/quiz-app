@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizCard } from '../../components/quiz-card/quiz-card';
 
@@ -8,10 +8,14 @@ import { QuizCard } from '../../components/quiz-card/quiz-card';
   templateUrl: './quiz-page.html',
   styles: ``,
 })
-export class QuizPage {
+export class QuizPage implements OnDestroy {
   currentQuestionIndex = signal(0);
+  timeLeft = signal(60);
+  private timerId: ReturnType<typeof setInterval> | null = null;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.startTimer();
+  }
 
   sample = {
     "questions": [
@@ -43,6 +47,25 @@ export class QuizPage {
     ]
   }
 
+  private startTimer() {
+    this.timerId = setInterval(() => {
+      if (this.timeLeft() <= 1) {
+        this.stopTimer();
+        this.timeLeft.set(0);
+        this.end();
+      } else {
+        this.timeLeft.set(this.timeLeft() - 1);
+      }
+    }, 1000);
+  }
+
+  private stopTimer() {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+  }
+
   next() {
     if (this.currentQuestionIndex() < this.sample.questions.length - 1) {
       this.currentQuestionIndex.set(this.currentQuestionIndex() + 1);
@@ -50,6 +73,12 @@ export class QuizPage {
   }
 
   end() {
+    this.stopTimer();
     this.router.navigate(['/result']);
   }
+
+  ngOnDestroy() {
+    this.stopTimer();
+  }
 }
+
