@@ -1,6 +1,6 @@
 {
   "/generate": {
-    "target": "http://localhost:3000",
+    "target": "https://quiz-app-backend-9fws.vercel.app",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
