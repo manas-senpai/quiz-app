@@ -1,8 +1,15 @@
 import { Component, signal } from '@angular/core';
-import { FormControl ,ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-
+type GeneratedQuizResponse = {
+  questions?: Array<{
+    question: string;
+    options: string[];
+    answer: string;
+  }>;
+  error?: string;
+};
 
 @Component({
   selector: 'app-home-page',
@@ -25,22 +32,67 @@ import { Router } from '@angular/router';
   `,
 })
 export class HomePage {
+  private readonly apiUrl = '/generate';
 
   isLoading = signal(false);
+  errorMessage = signal('');
 
   name = new FormControl('');
-  queNo = new FormControl('');
+  queNo = new FormControl('5');
 
   constructor(private router: Router) { }
 
-  onGenerateQuiz() {
+  async onGenerateQuiz() {
+    const topic = this.name.value?.trim() ?? '';
+    const questionCount = Number(this.queNo.value);
 
-    alert(this.name.value + ' ' + this.queNo.value);
+    if (!topic || !Number.isInteger(questionCount) || questionCount <= 0) {
+      this.errorMessage.set('Enter a topic and a valid number of questions.');
+      return;
+    }
+
+    this.errorMessage.set('');
     this.isLoading.set(true);
-    // Simulate quiz generation delay
-    setTimeout(() => {
+
+    try {
+      const response = await fetch(this.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic,
+          queNo: questionCount,
+        }),
+      });
+
+      const result = (await response.json()) as { generatedText?: string; error?: string };
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Unable to generate quiz right now.');
+      }
+
+      const quizData: GeneratedQuizResponse = result.generatedText
+        ? JSON.parse(result.generatedText)
+        : result;
+
+      if (quizData.error) {
+        throw new Error(quizData.error);
+      }
+
+      if (!quizData.questions?.length) {
+        throw new Error('No quiz questions were returned from the backend.');
+      }
+
+      localStorage.setItem('generatedQuiz', JSON.stringify(quizData));
+      await this.router.navigate(['/quiz'], { state: { quiz: quizData } });
+    } catch (error) {
+      console.error('Quiz generation failed:', error);
+      this.errorMessage.set(
+        error instanceof Error ? error.message : 'Something went wrong while generating the quiz.',
+      );
+    } finally {
       this.isLoading.set(false);
-      this.router.navigate(['/quiz']);
-    }, 2000);
+    }
   }
 }

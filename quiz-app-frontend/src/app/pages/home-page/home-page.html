@@ -13,18 +13,22 @@
 
       <div class="flex flex-col gap-2">
         <label for="queNo">Enter number of questions</label>
-        <input class="border rounded-md py-2 px-4" type="number" name="queNo" id="queNo" min="1" max="10" [formControl]="queNo" />
+        <input class="border rounded-md py-2 px-4" type="number" name="queNo" id="queNo" min="1" max="10"
+          [formControl]="queNo" />
       </div>
 
       <button type="button" class=" border py-2 px-4 rounded-md " (click)="onGenerateQuiz()" [disabled]="isLoading()">
         {{ isLoading() ? 'Generating...' : 'generate quiz' }}
       </button>
 
-      @if (isLoading())
-      {
-        <div class="flex justify-center mt-4">
-          <div class="loader"></div>
-        </div>
+      @if (isLoading()) {
+      <div class="flex justify-center mt-4">
+        <div class="loader"></div>
+      </div>
+      }
+
+      @if (errorMessage()) {
+      <p class="text-sm text-red-600">{{ errorMessage() }}</p>
       }
 
     </form>

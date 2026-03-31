@@ -5,6 +5,5 @@
 
 <p>{{timeLeft()}} Seconds Left....</p>
 <div class="flex justify-center min-w-full">
-
-  <app-quiz-card [question]="sample.questions[currentQuestionIndex()]" (nextQuestion)="next()" (endQuiz)="end()" />
+  <app-quiz-card [question]="quizData().questions[currentQuestionIndex()]" (nextQuestion)="next()" (endQuiz)="end()" />
 </div>

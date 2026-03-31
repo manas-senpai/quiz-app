@@ -2,6 +2,16 @@ import { Component, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizCard } from '../../components/quiz-card/quiz-card';
 
+type QuizQuestion = {
+  question: string;
+  options: string[];
+  answer: string;
+};
+
+type QuizData = {
+  questions: QuizQuestion[];
+};
+
 @Component({
   selector: 'app-quiz-page',
   imports: [QuizCard],
@@ -11,40 +21,43 @@ import { QuizCard } from '../../components/quiz-card/quiz-card';
 export class QuizPage implements OnDestroy {
   currentQuestionIndex = signal(0);
   timeLeft = signal(60);
+  quizData = signal<QuizData>(this.loadQuiz());
   private timerId: ReturnType<typeof setInterval> | null = null;
 
   constructor(private router: Router) {
     this.startTimer();
   }
 
-  sample = {
-    "questions": [
-      {
-        "question": "Which language runs in the browser?",
-        "options": ["Java", "C", "Python", "JavaScript"],
-        "answer": "JavaScript"
-      },
-      {
-        "question": "What does CSS stand for?",
-        "options": ["Central Style Sheets", "Cascading Style Sheets", "Cascading Simple Sheets", "Cars SUVs Sailboats"],
-        "answer": "Cascading Style Sheets"
-      },
-      {
-        "question": "What does HTML stand for?",
-        "options": ["Hypertext Markup Language", "Hypertext Markdown Language", "Hyperloop Machine Language", "Helicopters Terminals Motorboats Lamborginis"],
-        "answer": "Hypertext Markup Language"
-      },
-      {
-        "question": "What year was JavaScript launched?",
-        "options": ["1996", "1995", "1994", "none of the above"],
-        "answer": "1995"
-      },
-      {
-        "question": "What does SQL stand for?",
-        "options": ["Stylish Question Language", "Stylesheet Query Language", "Statement Question Language", "Structured Query Language"],
-        "answer": "Structured Query Language"
+  private loadQuiz(): QuizData {
+    if (typeof window !== 'undefined') {
+      const stateQuiz = window.history.state?.quiz as QuizData | undefined;
+
+      if (stateQuiz?.questions?.length) {
+        return stateQuiz;
       }
-    ]
+
+      const storedQuiz = window.localStorage.getItem('generatedQuiz');
+      if (storedQuiz) {
+        try {
+          const parsedQuiz = JSON.parse(storedQuiz) as QuizData;
+          if (parsedQuiz.questions?.length) {
+            return parsedQuiz;
+          }
+        } catch (error) {
+          console.error('Failed to read saved quiz data:', error);
+        }
+      }
+    }
+
+    return {
+      questions: [
+        {
+          question: 'Which language runs in the browser?',
+          options: ['Java', 'C', 'Python', 'JavaScript'],
+          answer: 'JavaScript',
+        },
+      ],
+    };
   }
 
   private startTimer() {
@@ -67,7 +80,7 @@ export class QuizPage implements OnDestroy {
   }
 
   next() {
-    if (this.currentQuestionIndex() < this.sample.questions.length - 1) {
+    if (this.currentQuestionIndex() < this.quizData().questions.length - 1) {
       this.currentQuestionIndex.set(this.currentQuestionIndex() + 1);
     }
   }
@@ -81,4 +94,3 @@ export class QuizPage implements OnDestroy {
     this.stopTimer();
   }
 }
-
