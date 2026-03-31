@@ -1,23 +1,23 @@
-<main class="flex flex-col items-center gap-4 m-4 p-4 ">
+<div class="flex flex-col items-center gap-4 m-4 p-4 ">
 
-  <div class="p-15 border rounded-md">
+  <div class="p-15 border rounded-xl bg-[#ffffff]">
 
 
     <h1 class=" text-5xl font-bold pb-4">Quiz App</h1>
 
     <form class="flex flex-col gap-4" action="">
-      <div class="flex flex-col gap-2">
-        <label for="topic">Enter topic to get quiz from AI</label>
-        <input class="border rounded-md py-2 px-4 " type="text" name="topic" id="topic" [formControl]="name" />
+      <div class="flex flex-col gap-2 ">
+        <label for="topic" class="flex self-center">Enter topic to get quiz from AI :</label>
+        <input class="border rounded-xl py-2 px-4 " type="text" name="topic" id="topic" [formControl]="name" />
       </div>
 
-      <div class="flex flex-col gap-2">
-        <label for="queNo">Enter number of questions</label>
-        <input class="border rounded-md py-2 px-4" type="number" name="queNo" id="queNo" min="1" max="10"
+      <div class="flex flex-col gap-2 ">
+        <label for="queNo" class="flex self-center">Enter number of questions :</label>
+        <input class="border rounded-xl py-2 px-4" type="number" name="queNo" id="queNo" min="1" max="10"
           [formControl]="queNo" />
       </div>
 
-      <button type="button" class=" border py-2 px-4 rounded-md " (click)="onGenerateQuiz()" [disabled]="isLoading()">
+      <button type="button" class=" border rounded-xl py-2 px-4 bg-[#4f46e5] text-white " (click)="onGenerateQuiz()" [disabled]="isLoading()">
         {{ isLoading() ? 'Generating...' : 'generate quiz' }}
       </button>
 
@@ -33,4 +33,4 @@
 
     </form>
   </div>
-</main>
+</div>
