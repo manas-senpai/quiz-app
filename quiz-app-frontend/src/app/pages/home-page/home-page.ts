@@ -17,12 +17,15 @@ type GeneratedQuizResponse = {
   templateUrl: './home-page.html',
   styles: `
     .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
+      border: 4px solid rgba(91, 77, 255, 0.12);
+      border-top: 4px solid #5b4dff;
+      border-right: 4px solid #ec4899;
+      border-bottom: 4px solid #14b8a6;
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      animation: spin 2s linear infinite;
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 0 6px rgba(91, 77, 255, 0.08);
     }
 
     @keyframes spin {

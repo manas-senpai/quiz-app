@@ -1,12 +1,51 @@
-<div class="flex flex-col items-center gap-4 m-4 p-4 w-2xl border">
+<div class="glass-panel result-reveal m-4 flex w-full max-w-2xl flex-col items-center gap-4 p-6 text-center sm:p-8">
+  <span class="quiz-chip">{{ headline() }}</span>
 
-  <h1>Result:</h1>
-  <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+  <h1 class="text-4xl font-black text-slate-800">Result:</h1>
+  <p class="text-sm text-slate-600">{{ summaryText() }}</p>
 
-  <p>10/10</p>
-<div class="flex flex-col justify-center items-center gap-4">
-  <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer"  (click)="retry()" >Retake Quiz</button>
-  <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer " (click)="home()">Home</button>
-</div>
+  <div class="quiz-progress-wrap w-full rounded-2xl bg-[rgba(91,77,255,0.06)] p-3">
+    <mat-progress-bar mode="determinate" [value]="result().percentage"></mat-progress-bar>
+  </div>
 
+  <div class="grid w-full gap-3 sm:grid-cols-3">
+    <div class="quiz-stat-card">
+      <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Score</p>
+      <p class="text-2xl font-black text-[#5b4dff]">{{ result().correctAnswers }}/{{ result().totalQuestions }}</p>
+    </div>
+    <div class="quiz-stat-card">
+      <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Accuracy</p>
+      <p class="text-2xl font-black text-emerald-600">{{ result().percentage }}%</p>
+    </div>
+    <div class="quiz-stat-card">
+      <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Missed</p>
+      <p class="text-2xl font-black text-rose-500">{{ result().wrongAnswers }}</p>
+    </div>
+  </div>
+
+  @if (result().answers.length) {
+  <div class="w-full rounded-2xl bg-[rgba(91,77,255,0.05)] p-4 text-left">
+    <h2 class="text-lg font-bold text-slate-800">Answer recap</h2>
+
+    <div class="mt-3 flex flex-col gap-2">
+      @for (answer of result().answers; track answer.question) {
+      <div class="quiz-review-row" [class.quiz-review-row-wrong]="!answer.isCorrect">
+        <div>
+          <p class="font-semibold text-slate-800">{{ answer.question }}</p>
+          <p class="text-xs text-slate-600">Your answer: {{ answer.selectedOption }}</p>
+          @if (!answer.isCorrect) {
+          <p class="text-xs text-emerald-700">Correct: {{ answer.correctAnswer }}</p>
+          }
+        </div>
+
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  <div class="flex flex-wrap justify-center gap-3">
+    <button class="quiz-action-primary max-w-fit cursor-pointer px-4 py-2" (click)="retry()">Retake Quiz</button>
+    <button class="quiz-action-secondary max-w-fit cursor-pointer px-4 py-2" (click)="home()">Home</button>
+  </div>
 </div>

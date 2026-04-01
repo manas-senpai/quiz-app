@@ -1,36 +1,43 @@
-<div class="flex flex-col items-center gap-4 m-4 p-4 ">
+<div class="m-4 flex w-full max-w-2xl flex-col items-center gap-4 p-2">
+  <div class="glass-panel w-full max-w-xl p-6 sm:p-10">
+    <div class="mb-4 flex flex-wrap items-center justify-center gap-2">
+      <span class="quiz-chip">AI powered</span>
+    </div>
 
-  <div class="p-15 border rounded-xl bg-[#ffffff]">
-
-
-    <h1 class=" text-5xl font-bold pb-4">Quiz App</h1>
+    <h1 class="pb-2 text-center text-5xl font-black tracking-tight text-slate-800">Quiz App</h1>
+    <p class="mb-6 text-center text-sm text-slate-600">
+      Pick a topic, choose the number of questions, and jump right into the quiz.
+    </p>
 
     <form class="flex flex-col gap-4" action="">
-      <div class="flex flex-col gap-2 ">
-        <label for="topic" class="flex self-center">Enter topic to get quiz from AI :</label>
-        <input class="border rounded-xl py-2 px-4 " type="text" name="topic" id="topic" [formControl]="name" />
+      <div class="flex flex-col gap-2">
+        <label for="topic" class="text-sm font-semibold text-slate-700">Enter topic to get quiz from AI :</label>
+        <input
+          class="rounded-2xl border border-[rgba(91,77,255,0.18)] bg-white/80 px-4 py-3 outline-none focus:border-[#5b4dff] focus:ring-4 focus:ring-[rgba(91,77,255,0.14)]"
+          type="text" name="topic" id="topic" [formControl]="name" />
       </div>
 
-      <div class="flex flex-col gap-2 ">
-        <label for="queNo" class="flex self-center">Enter number of questions :</label>
-        <input class="border rounded-xl py-2 px-4" type="number" name="queNo" id="queNo" min="1" max="10"
-          [formControl]="queNo" />
+      <div class="flex flex-col gap-2">
+        <label for="queNo" class="text-sm font-semibold text-slate-700">Enter number of questions :</label>
+        <input
+          class="rounded-2xl border border-[rgba(91,77,255,0.18)] bg-white/80 px-4 py-3 outline-none focus:border-[#5b4dff] focus:ring-4 focus:ring-[rgba(91,77,255,0.14)]"
+          type="number" name="queNo" id="queNo" min="1" max="10" [formControl]="queNo" />
       </div>
 
-      <button type="button" class=" border rounded-xl py-2 px-4 bg-[#4f46e5] text-white " (click)="onGenerateQuiz()" [disabled]="isLoading()">
+      <button type="button" class="quiz-action-primary w-full px-4 py-3 text-base font-semibold"
+        (click)="onGenerateQuiz()" [disabled]="isLoading()">
         {{ isLoading() ? 'Generating...' : 'generate quiz' }}
       </button>
 
       @if (isLoading()) {
-      <div class="flex justify-center mt-4">
+      <div class="mt-4 flex justify-center">
         <div class="loader"></div>
       </div>
       }
 
       @if (errorMessage()) {
-      <p class="text-sm text-red-600">{{ errorMessage() }}</p>
+      <p class="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{{ errorMessage() }}</p>
       }
-
     </form>
   </div>
 </div>

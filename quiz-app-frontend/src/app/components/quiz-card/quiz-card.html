@@ -1,22 +1,27 @@
-<div class="flex flex-col  border items-center mt-10 max-w-fit ">
+<div class="glass-panel result-reveal mt-2 flex w-full max-w-2xl flex-col items-center gap-5 p-5 sm:p-7">
 
+  <h2 class="text-center text-2xl font-black text-slate-800">{{ question().question }}</h2>
 
-  <h2 class="flex justify-center ">{{question()}}</h2>
-  <h2 class="flex justify-center ">{{question().question}}</h2>
-  <div>
+  <div class="w-full">
+    <div class="flex min-w-70 flex-1 flex-col items-start gap-3 rounded-2xl bg-[rgba(91,77,255,0.04)] p-3 sm:p-4">
+      @for (option of question().options; track option) {
+      <button class="quiz-option cursor-pointer" [class.quiz-option-selected]="selectedOption() === option"
+        [class.quiz-option-correct]="isCorrectOption(option)" [class.quiz-option-wrong]="isWrongSelection(option)"
+        (click)="chooseOption(option)" [disabled]="isAnswered()">
+        <span>{{ option }}</span>
 
-    <div class="flex flex-1 flex-col gap-2 items-start min-w-70 border p-3">
-      @for(option of question().options; track option){
-      <button class="border rounded-2xl w-full p-1.5 cursor-pointer flex items-start">{{option}}</button>
+      </button>
       }
-
     </div>
   </div>
 
-  <div class="flex flex-col justify-center items-center gap-2 mt-5">
-    <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer " (click)="nextQuestion.emit()">Next
-      question</button>
-    <button class="border rounded-2xl max-w-fit p-1.5 cursor-pointer " (click)="endQuiz.emit()">End quiz</button>
+  <div class="mt-2 flex flex-wrap justify-center gap-3">
+    <button class="quiz-action-primary max-w-fit cursor-pointer px-4 py-2" (click)="nextQuestion.emit()"
+      [disabled]="!selectedOption()">
+      Next question
+    </button>
+    <button class="quiz-action-secondary max-w-fit cursor-pointer px-4 py-2" (click)="endQuiz.emit()">
+      End quiz
+    </button>
   </div>
-
 </div>
