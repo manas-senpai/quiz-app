@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/generate",
+      "destination": "https://quiz-app-backend-9fws.vercel.app/generate"
+    }
+  ]
+}
